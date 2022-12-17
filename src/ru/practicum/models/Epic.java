@@ -12,6 +12,28 @@ public class Epic extends Task {
         this.subtasks = new ArrayList<>();
     }
 
+    public void checker() {
+        int newCount = 0;
+        int inProgressCount = 0;
+        int doneCount = 0;
+        for (Subtask subtask: subtasks) {
+            if (subtask.taskStatus.equals("NEW")) {
+                newCount++;
+            }
+            if (subtask.taskStatus.equals("IN_PROGRESS")) {
+                inProgressCount++;
+            }
+            if (subtask.taskStatus.equals("DONE")) {
+                doneCount++;
+            }
+        }
+        if (newCount == subtasks.size() || subtasks.isEmpty()) {
+            taskStatus = "NEW";
+        } else if (doneCount == subtasks.size()) {
+            taskStatus = "DONE";
+        } else taskStatus = "IN_PROGRESS";
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

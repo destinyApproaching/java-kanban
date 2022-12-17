@@ -29,6 +29,7 @@ public class Main {
         status = scanner.nextLine();
         task = new Epic(name, description, manager.getUniqueId(), status);
         manager.createTask(task);
+        ((Epic) manager.getEpic(2)).checker();
         // 4
         name = scanner.nextLine();
         description = scanner.nextLine();
@@ -37,6 +38,7 @@ public class Main {
         ((Subtask) task).setEpicId(manager.getEpicId(2));
         manager.createTask(task);
         ((Epic) manager.getEpic(2)).addSubtask((Subtask) task);
+        ((Epic) manager.getEpic(2)).checker();
         // 5
         name = scanner.nextLine();
         description = scanner.nextLine();
@@ -45,12 +47,14 @@ public class Main {
         ((Subtask) task).setEpicId(manager.getEpicId(2));
         manager.createTask(task);
         ((Epic) manager.getEpic(2)).addSubtask((Subtask) task);
+        ((Epic) manager.getEpic(2)).checker();
         // 6
         name = scanner.nextLine();
         description = scanner.nextLine();
         status = scanner.nextLine();
         task = new Epic(name, description, manager.getUniqueId(), status);
         manager.createTask(task);
+        ((Epic) manager.getEpic(5)).checker();
         // 7
         name = scanner.nextLine();
         description = scanner.nextLine();
@@ -59,6 +63,7 @@ public class Main {
         ((Subtask) task).setEpicId(manager.getEpicId(5));
         manager.createTask(task);
         ((Epic) manager.getEpic(5)).addSubtask((Subtask) task);
+        ((Epic) manager.getEpic(5)).checker();
 
         manager.getTasks();
         manager.printSubtasksInEpic();
