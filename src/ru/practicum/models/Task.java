@@ -1,14 +1,15 @@
 package ru.practicum.models;
 
 import java.util.Objects;
+import ru.practicum.enums.TaskStatus;
 
 public class Task {
     protected String taskName;
     protected String description;
     protected int taskId = 0;
-    protected String taskStatus; // NEW || IN_PROGRESS || DONE
+    protected TaskStatus taskStatus; // NEW || IN_PROGRESS || DONE
 
-    public Task(String taskName, String description, int taskId, String taskStatus) {
+    public Task(String taskName, String description, int taskId, TaskStatus taskStatus) {
         this.taskName = taskName;
         this.description = description;
         this.taskId = taskId;
@@ -27,7 +28,7 @@ public class Task {
         return taskId;
     }
 
-    public String getTaskStatus() {
+    public TaskStatus getTaskStatus() {
         return taskStatus;
     }
 

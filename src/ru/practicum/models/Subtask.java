@@ -1,11 +1,13 @@
 package ru.practicum.models;
 
+import ru.practicum.enums.TaskStatus;
+
 import java.util.Objects;
 
 public class Subtask extends Task {
     protected int epicId;
 
-    public Subtask(String taskName, String description, int taskId, String taskStatus) {
+    public Subtask(String taskName, String description, int taskId, TaskStatus taskStatus) {
         super(taskName, description, taskId, taskStatus);
     }
 
