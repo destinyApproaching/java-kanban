@@ -9,6 +9,12 @@ public class Task {
     protected int taskId = 0;
     protected TaskStatus taskStatus; // NEW || IN_PROGRESS || DONE
 
+    public Task(String taskName, String description, int taskId) {
+        this.taskName = taskName;
+        this.description = description;
+        this.taskId = taskId;
+    }
+
     public Task(String taskName, String description, int taskId, TaskStatus taskStatus) {
         this.taskName = taskName;
         this.description = description;

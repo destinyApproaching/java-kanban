@@ -1,214 +1,93 @@
 package ru.practicum;
 
 import ru.practicum.models.*;
-import ru.practicum.services.Manager;
+import ru.practicum.services.InMemoryTaskManager;
 import ru.practicum.enums.TaskStatus;
-
-import java.util.Scanner;
+import ru.practicum.services.Manager;
 
 public class Main {
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        Manager manager = new Manager();
-        Task task;
-        // 1
-        String name = scanner.nextLine();
-        String description = scanner.nextLine();
-        String status;
-        label4:
-        while (true) {
-            System.out.println("Выберите статус задачи:\n1 - NEW\n2 - IN_PROGRESS\n3 - DONE");
-            status = scanner.nextLine();
-            switch (status) {
-                case "1":
-                    task = new Task(name, description, manager.getCurrent(), TaskStatus.NEW);
-                    manager.createTask(task);
-                    break label4;
-                case "2":
-                    task = new Task(name, description, manager.getCurrent(), TaskStatus.IN_PROGRESS);
-                    manager.createTask(task);
-                    break label4;
-                case "3":
-                    task = new Task(name, description, manager.getCurrent(), TaskStatus.DONE);
-                    manager.createTask(task);
-                    break label4;
-                default:
-                    System.out.println("Повторите попытку.");
-                    break;
-            }
-        }
+        InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
+        Subtask subtask;
+        inMemoryTaskManager.createTask(new Task("Помыть посуду", "Взять губку",
+                inMemoryTaskManager.getCurrent(), TaskStatus.NEW)); // 1
 
-        // 2
-        name = scanner.nextLine();
-        description = scanner.nextLine();
-        label5:
-        while (true) {
-            System.out.println("Выберите статус задачи:\n1 - NEW\n2 - IN_PROGRESS\n3 - DONE");
-            status = scanner.nextLine();
-            switch (status) {
-                case "1":
-                    task = new Task(name, description, manager.getCurrent(), TaskStatus.NEW);
-                    manager.createTask(task);
-                    break label5;
-                case "2":
-                    task = new Task(name, description, manager.getCurrent(), TaskStatus.IN_PROGRESS);
-                    manager.createTask(task);
-                    break label5;
-                case "3":
-                    task = new Task(name, description, manager.getCurrent(), TaskStatus.DONE);
-                    manager.createTask(task);
-                    break label5;
-                default:
-                    System.out.println("Повторите попытку.");
-                    break;
-            }
-        }
-        // 3
-        name = scanner.nextLine();
-        description = scanner.nextLine();
-        label6:
-        while (true) {
-            System.out.println("Выберите статус задачи:\n1 - NEW\n2 - IN_PROGRESS\n3 - DONE");
-            status = scanner.nextLine();
-            switch (status) {
-                case "1":
-                    task = new Epic(name, description, manager.getCurrent(), TaskStatus.NEW);
-                    manager.createTask(task);
-                    break label6;
-                case "2":
-                    task = new Epic(name, description, manager.getCurrent(), TaskStatus.IN_PROGRESS);
-                    manager.createTask(task);
-                    break label6;
-                case "3":
-                    task = new Epic(name, description, manager.getCurrent(), TaskStatus.DONE);
-                    manager.createTask(task);
-                    break label6;
-                default:
-                    System.out.println("Повторите попытку.");
-                    break;
-            }
-        }
-        ((Epic) manager.getEpic(2)).checker();
-        // 4
-        name = scanner.nextLine();
-        description = scanner.nextLine();
-        label:
-        while (true) {
-            System.out.println("Выберите статус задачи:\n1 - NEW\n2 - IN_PROGRESS\n3 - DONE");
-            status = scanner.nextLine();
-            switch (status) {
-                case "1":
-                    task = new Subtask(name, description, manager.getCurrent(), TaskStatus.NEW);
-                    ((Subtask) task).setEpicId(manager.getEpicId(2));
-                    manager.createTask(task);
-                    break label;
-                case "2":
-                    task = new Subtask(name, description, manager.getCurrent(), TaskStatus.IN_PROGRESS);
-                    ((Subtask) task).setEpicId(manager.getEpicId(2));
-                    manager.createTask(task);
-                    break label;
-                case "3":
-                    task = new Subtask(name, description, manager.getCurrent(), TaskStatus.DONE);
-                    ((Subtask) task).setEpicId(manager.getEpicId(2));
-                    manager.createTask(task);
-                    break label;
-                default:
-                    System.out.println("Повторите попытку.");
-                    break;
-            }
-        }
-        ((Epic) manager.getEpic(2)).addSubtask((Subtask) task);
-        ((Epic) manager.getEpic(2)).checker();
-        // 5
-        name = scanner.nextLine();
-        description = scanner.nextLine();
-        label1:
-        while (true) {
-            System.out.println("Выберите статус задачи:\n1 - NEW\n2 - IN_PROGRESS\n3 - DONE");
-            status = scanner.nextLine();
-            switch (status) {
-                case "1":
-                    task = new Subtask(name, description, manager.getCurrent(), TaskStatus.NEW);
-                    ((Subtask) task).setEpicId(manager.getEpicId(2));
-                    manager.createTask(task);
-                    break label1;
-                case "2":
-                    task = new Subtask(name, description, manager.getCurrent(), TaskStatus.IN_PROGRESS);
-                    ((Subtask) task).setEpicId(manager.getEpicId(2));
-                    manager.createTask(task);
-                    break label1;
-                case "3":
-                    task = new Subtask(name, description, manager.getCurrent(), TaskStatus.DONE);
-                    ((Subtask) task).setEpicId(manager.getEpicId(2));
-                    manager.createTask(task);
-                    break label1;
-                default:
-                    System.out.println("Повторите попытку.");
-                    break;
-            }
-        }
-        ((Epic) manager.getEpic(2)).addSubtask((Subtask) task);
-        ((Epic) manager.getEpic(2)).checker();
-        // 6
-        name = scanner.nextLine();
-        description = scanner.nextLine();
-        label2:
-        while (true) {
-            System.out.println("Выберите статус задачи:\n1 - NEW\n2 - IN_PROGRESS\n3 - DONE");
-            status = scanner.nextLine();
-            switch (status) {
-                case "1":
-                    task = new Epic(name, description, manager.getCurrent(), TaskStatus.NEW);
-                    manager.createTask(task);
-                    break label2;
-                case "2":
-                    task = new Epic(name, description, manager.getCurrent(), TaskStatus.IN_PROGRESS);
-                    manager.createTask(task);
-                    break label2;
-                case "3":
-                    task = new Epic(name, description, manager.getCurrent(), TaskStatus.DONE);
-                    manager.createTask(task);
-                    break label2;
-                default:
-                    System.out.println("Повторите попытку.");
-                    break;
-            }
-        }
-        ((Epic) manager.getEpic(5)).checker();
-        // 7
-        name = scanner.nextLine();
-        description = scanner.nextLine();
-        label3:
-        while (true) {
-            System.out.println("Выберите статус задачи:\n1 - NEW\n2 - IN_PROGRESS\n3 - DONE");
-            status = scanner.nextLine();
-            switch (status) {
-                case "1":
-                    task = new Subtask(name, description, manager.getCurrent(), TaskStatus.NEW);
-                    ((Subtask) task).setEpicId(manager.getEpicId(5));
-                    manager.createTask(task);
-                    break label3;
-                case "2":
-                    task = new Subtask(name, description, manager.getCurrent(), TaskStatus.IN_PROGRESS);
-                    ((Subtask) task).setEpicId(manager.getEpicId(5));
-                    manager.createTask(task);
-                    break label3;
-                case "3":
-                    task = new Subtask(name, description, manager.getCurrent(), TaskStatus.DONE);
-                    ((Subtask) task).setEpicId(manager.getEpicId(5));
-                    manager.createTask(task);
-                    break label3;
-                default:
-                    System.out.println("Повторите попытку.");
-                    break;
-            }
-        }
-        ((Epic) manager.getEpic(5)).addSubtask((Subtask) task);
-        ((Epic) manager.getEpic(5)).checker();
+        inMemoryTaskManager.createTask(new Epic("Помыть полы", "Взять губку",
+                inMemoryTaskManager.getCurrent())); // 2
 
-        manager.getTasks();
-        manager.printSubtasksInEpic();
-        manager.deleteTaskById();
+        inMemoryTaskManager.createTask(subtask = new Subtask("Купить швабру", "Взять губку",
+                inMemoryTaskManager.getCurrent(), TaskStatus.DONE, 1)); // 3
+        ((Epic) inMemoryTaskManager.getEpic(1)).addSubtask(subtask);
+        ((Epic) inMemoryTaskManager.getEpic(1)).checker();
+
+        inMemoryTaskManager.createTask(subtask = new Subtask("Купить таз", "Взять губку",
+                inMemoryTaskManager.getCurrent(), TaskStatus.DONE, 1)); // 4
+        ((Epic) inMemoryTaskManager.getEpic(1)).addSubtask(subtask);
+        ((Epic) inMemoryTaskManager.getEpic(1)).checker();
+
+        inMemoryTaskManager.createTask(new Epic("Приготовить бутерброд", "Взять губку",
+                inMemoryTaskManager.getCurrent())); // 5
+
+        inMemoryTaskManager.createTask(subtask = new Subtask("Порезать колбасу",
+                "Взять губку", inMemoryTaskManager.getCurrent(), TaskStatus.NEW, 4)); //6
+        ((Epic) inMemoryTaskManager.getEpic(4)).addSubtask(subtask);
+        ((Epic) inMemoryTaskManager.getEpic(4)).checker();
+
+        inMemoryTaskManager.createTask(subtask = new Subtask("Положить колбасу на хлеб",
+                "Взять губку", inMemoryTaskManager.getCurrent(), TaskStatus.IN_PROGRESS, 4)); // 6
+        ((Epic) inMemoryTaskManager.getEpic(4)).addSubtask(subtask);
+        ((Epic) inMemoryTaskManager.getEpic(4)).checker();
+
+        inMemoryTaskManager.createTask(new Task("Постирать вещи", "Взять губку",
+                inMemoryTaskManager.getCurrent(), TaskStatus.IN_PROGRESS)); // 7
+        inMemoryTaskManager.createTask(new Task("Почистить зубы", "Взять губку",
+                inMemoryTaskManager.getCurrent(), TaskStatus.DONE)); // 8
+        inMemoryTaskManager.createTask(new Task("Погулять", "Взять губку",
+                inMemoryTaskManager.getCurrent(), TaskStatus.NEW)); // 9
+        inMemoryTaskManager.createTask(new Task("Посмотреть телевизор", "Взять губку",
+                inMemoryTaskManager.getCurrent(), TaskStatus.DONE)); // 10
+        inMemoryTaskManager.createTask(new Task("Сделать домашку", "Взять губку",
+                inMemoryTaskManager.getCurrent(), TaskStatus.DONE)); // 11
+        inMemoryTaskManager.createTask(new Task("Пойти в школу", "Взять губку",
+                inMemoryTaskManager.getCurrent(), TaskStatus.NEW)); // 12
+        inMemoryTaskManager.createTask(new Task("Посетить ВУЗ", "Взять губку",
+                inMemoryTaskManager.getCurrent(), TaskStatus.IN_PROGRESS)); // 13
+        inMemoryTaskManager.createTask(new Task("Купить новую печку", "Взять губку",
+                inMemoryTaskManager.getCurrent(), TaskStatus.IN_PROGRESS)); // 14
+        inMemoryTaskManager.createTask(new Task("Выгулять собаку", "Взять губку",
+                inMemoryTaskManager.getCurrent(), TaskStatus.NEW)); // 15
+        inMemoryTaskManager.createTask(new Task("Заказать суши", "Взять губку",
+                inMemoryTaskManager.getCurrent(), TaskStatus.DONE)); // 16
+        inMemoryTaskManager.createTask(new Task("Поиграть в колду", "Взять губку",
+                inMemoryTaskManager.getCurrent(), TaskStatus.DONE)); // 17
+        inMemoryTaskManager.createTask(new Task("Выпить сок", "Взять губку",
+                inMemoryTaskManager.getCurrent(), TaskStatus.NEW)); // 18
+        inMemoryTaskManager.createTask(new Task("Помыться", "Взять губку",
+                inMemoryTaskManager.getCurrent(), TaskStatus.NEW)); // 19
+        inMemoryTaskManager.createTask(new Task("Заправить кровать", "Взять губку",
+                inMemoryTaskManager.getCurrent(), TaskStatus.NEW)); // 20
+        inMemoryTaskManager.createTask(new Task("Сходить в парк", "Взять губку",
+                inMemoryTaskManager.getCurrent(), TaskStatus.NEW)); // 21
+
+        System.out.println(inMemoryTaskManager.getTask(20));
+        System.out.println(inMemoryTaskManager.getTask(19));
+        System.out.println(inMemoryTaskManager.getTask(18));
+        System.out.println(inMemoryTaskManager.getTask(17));
+        System.out.println(inMemoryTaskManager.getTask(16));
+        System.out.println(inMemoryTaskManager.getTask(15));
+        System.out.println(inMemoryTaskManager.getTask(14));
+        System.out.println(inMemoryTaskManager.getTask(13));
+        System.out.println(inMemoryTaskManager.getTask(12));
+        System.out.println(inMemoryTaskManager.getTask(11));
+        System.out.println(inMemoryTaskManager.getTask(10));
+        System.out.println(inMemoryTaskManager.getTask(9));
+        System.out.println(inMemoryTaskManager.getTask(8));
+        System.out.println(inMemoryTaskManager.getTask(7));
+
+        System.out.println(inMemoryTaskManager.inMemoryHistoryManager.getHistory());
+        Manager.setInMemoryHistoryManager(inMemoryTaskManager.inMemoryHistoryManager);
+        System.out.println(Manager.getDefaultHistory());
+
     }
 }
