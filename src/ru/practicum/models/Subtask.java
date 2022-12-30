@@ -1,7 +1,5 @@
 package ru.practicum.models;
 
-import ru.practicum.enums.TaskStatus;
-
 import java.util.Objects;
 
 public class Subtask extends Task {

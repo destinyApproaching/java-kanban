@@ -1,7 +1,5 @@
 package ru.practicum.models;
 
-import ru.practicum.enums.TaskStatus;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -18,7 +16,7 @@ public class Epic extends Task {
         int newCount = 0;
         int inProgressCount = 0;
         int doneCount = 0;
-        for (Subtask subtask: subtasks) {
+        for (Subtask subtask : subtasks) {
             if (subtask.taskStatus == TaskStatus.NEW) {
                 newCount++;
             }

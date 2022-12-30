@@ -1,7 +1,6 @@
 package ru.practicum.models;
 
 import java.util.Objects;
-import ru.practicum.enums.TaskStatus;
 
 public class Task {
     protected String taskName;

@@ -1,4 +1,4 @@
-package ru.practicum.interfaces;
+package ru.practicum.services;
 
 import ru.practicum.models.Task;
 

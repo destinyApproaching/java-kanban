@@ -1,14 +1,16 @@
 package ru.practicum;
 
+import ru.practicum.services.TaskManager;
 import ru.practicum.models.*;
-import ru.practicum.services.InMemoryTaskManager;
-import ru.practicum.enums.TaskStatus;
-import ru.practicum.services.Manager;
+import ru.practicum.models.TaskStatus;
+import ru.practicum.utils.Manager;
 
 public class Main {
 
     public static void main(String[] args) {
-        InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
+        // С наступающим новым годом Владимир:)
+
+        TaskManager inMemoryTaskManager = Manager.getDefaultTaskManager();
         Subtask subtask;
         inMemoryTaskManager.createTask(new Task("Помыть посуду", "Взять губку",
                 inMemoryTaskManager.getCurrent(), TaskStatus.NEW)); // 1
@@ -85,9 +87,8 @@ public class Main {
         System.out.println(inMemoryTaskManager.getTask(8));
         System.out.println(inMemoryTaskManager.getTask(7));
 
-        System.out.println(inMemoryTaskManager.inMemoryHistoryManager.getHistory());
-        Manager.setInMemoryHistoryManager(inMemoryTaskManager.inMemoryHistoryManager);
-        System.out.println(Manager.getDefaultHistory());
+        System.out.println(inMemoryTaskManager.getHistory());
 
+        System.out.println(Manager.getDefaultHistory());
     }
 }

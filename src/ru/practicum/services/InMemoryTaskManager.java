@@ -1,7 +1,5 @@
 package ru.practicum.services;
 
-
-import ru.practicum.interfaces.TaskManager;
 import ru.practicum.models.*;
 
 import java.util.ArrayList;
@@ -12,12 +10,13 @@ public class InMemoryTaskManager implements TaskManager {
     private int current = 1;
     Scanner scanner = new Scanner(System.in);
     private final List<Task> tasks;
-    public InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
+    private final InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
 
     public InMemoryTaskManager() {
         this.tasks = new ArrayList<>();
     }
 
+    @Override
     public int getCurrent() {
         return current;
     }
@@ -30,14 +29,17 @@ public class InMemoryTaskManager implements TaskManager {
         this.current = current;
     }
 
+    @Override
     public int getEpicId(int id) {
         return tasks.get(id).getTaskId();
     }
 
+    @Override
     public Task getEpic(int id) {
         return tasks.get(id);
     }
 
+    @Override
     public Task getTask(int id) {
         inMemoryHistoryManager.add(tasks.get(id));
         return tasks.get(id);
@@ -107,5 +109,10 @@ public class InMemoryTaskManager implements TaskManager {
         if (tasks.get(id).getClass() == Epic.class) {
             System.out.println(((Epic) tasks.get(id)).getSubtasks());
         } else System.out.println("Под таким id не Epic-класс");
+    }
+
+    @Override
+    public List<Task> getHistory() {
+        return inMemoryHistoryManager.getHistory();
     }
 }
