@@ -6,11 +6,12 @@ import ru.practicum.services.InMemoryHistoryManager;
 import java.util.List;
 
 public interface TaskManager {
-    InMemoryHistoryManager inMemoryHistoryManager = null;
 
     Task getTask(int id);
 
     Task getEpic(int id);
+
+    Task getSubtask(int id);
 
     int getEpicId(int id);
 

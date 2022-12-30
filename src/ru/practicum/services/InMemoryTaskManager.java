@@ -1,6 +1,7 @@
 package ru.practicum.services;
 
 import ru.practicum.models.*;
+import ru.practicum.utils.Manager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,12 +10,8 @@ import java.util.Scanner;
 public class InMemoryTaskManager implements TaskManager {
     private int current = 1;
     Scanner scanner = new Scanner(System.in);
-    private final List<Task> tasks;
-    private final InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
-
-    public InMemoryTaskManager() {
-        this.tasks = new ArrayList<>();
-    }
+    private final List<Task> tasks = new ArrayList<>();
+    private final HistoryManager inMemoryHistoryManager = Manager.getDefaultHistory();
 
     @Override
     public int getCurrent() {
@@ -45,6 +42,7 @@ public class InMemoryTaskManager implements TaskManager {
         return tasks.get(id);
     }
 
+    @Override
     public Task getSubtask(int id) {
         return tasks.get(id);
     }

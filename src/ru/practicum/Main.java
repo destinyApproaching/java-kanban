@@ -8,10 +8,9 @@ import ru.practicum.utils.Manager;
 public class Main {
 
     public static void main(String[] args) {
-        // С наступающим новым годом Владимир:)
-
         TaskManager inMemoryTaskManager = Manager.getDefaultTaskManager();
         Subtask subtask;
+
         inMemoryTaskManager.createTask(new Task("Помыть посуду", "Взять губку",
                 inMemoryTaskManager.getCurrent(), TaskStatus.NEW)); // 1
 
@@ -88,7 +87,5 @@ public class Main {
         System.out.println(inMemoryTaskManager.getTask(7));
 
         System.out.println(inMemoryTaskManager.getHistory());
-
-        System.out.println(Manager.getDefaultHistory());
     }
 }
