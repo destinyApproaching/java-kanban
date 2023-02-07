@@ -61,6 +61,9 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteAllTasks() {
+        for (int i = 1; i <= getCurrent() ; i++) {
+            inMemoryHistoryManager.remove(i);
+        }
         tasks.clear();
         setCurrent(1);
         System.out.println("Удаление прошло успешно.");
@@ -93,15 +96,24 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteTaskById() {
-        System.out.println("Всего id: " + getCurrent());
         System.out.println("Введите id, которое хотите удалить");
         int id = scanner.nextInt();
-        tasks.remove(id);
+        for (Task task : tasks) {
+            if (task.getTaskId() == id) {
+                tasks.remove(task);
+                inMemoryHistoryManager.remove(task.getTaskId());
+                if (task.getClass().getSimpleName().equals("Epic")) {
+                    for (Task subtask : ((Epic) task).getSubtasks()) {
+                        tasks.remove(subtask);
+                        inMemoryHistoryManager.remove(subtask.getTaskId());
+                    }
+                }
+            }
+        }
     }
 
     @Override
     public void printSubtasksInEpic() {
-        System.out.println("Всего id: " + getCurrent());
         System.out.println("Введите id Epic-класса");
         int id = scanner.nextInt();
         if (tasks.get(id).getClass() == Epic.class) {

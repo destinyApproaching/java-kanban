@@ -14,31 +14,41 @@ public class Main {
         inMemoryTaskManager.createTask(new Task("Помыть посуду", "Взять губку",
                 inMemoryTaskManager.getCurrent(), TaskStatus.NEW)); // 1
 
+        inMemoryTaskManager.createTask(new Task("Постирать вещи", "Взять губку",
+                inMemoryTaskManager.getCurrent(), TaskStatus.IN_PROGRESS)); // 2
+
+
         inMemoryTaskManager.createTask(new Epic("Помыть полы", "Взять губку",
-                inMemoryTaskManager.getCurrent())); // 2
+                inMemoryTaskManager.getCurrent())); // 3
 
         inMemoryTaskManager.createTask(subtask = new Subtask("Купить швабру", "Взять губку",
-                inMemoryTaskManager.getCurrent(), TaskStatus.DONE, 1)); // 3
-        ((Epic) inMemoryTaskManager.getEpic(1)).addSubtask(subtask);
-        ((Epic) inMemoryTaskManager.getEpic(1)).checker();
+                inMemoryTaskManager.getCurrent(), TaskStatus.DONE, 2)); // 4
+        ((Epic) inMemoryTaskManager.getEpic(2)).addSubtask(subtask);
+        ((Epic) inMemoryTaskManager.getEpic(2)).checker();
 
         inMemoryTaskManager.createTask(subtask = new Subtask("Купить таз", "Взять губку",
-                inMemoryTaskManager.getCurrent(), TaskStatus.DONE, 1)); // 4
-        ((Epic) inMemoryTaskManager.getEpic(1)).addSubtask(subtask);
-        ((Epic) inMemoryTaskManager.getEpic(1)).checker();
-
-        inMemoryTaskManager.createTask(new Epic("Приготовить бутерброд", "Взять губку",
-                inMemoryTaskManager.getCurrent())); // 5
+                inMemoryTaskManager.getCurrent(), TaskStatus.DONE, 2)); // 5
+        ((Epic) inMemoryTaskManager.getEpic(2)).addSubtask(subtask);
+        ((Epic) inMemoryTaskManager.getEpic(2)).checker();
 
         inMemoryTaskManager.createTask(subtask = new Subtask("Порезать колбасу",
-                "Взять губку", inMemoryTaskManager.getCurrent(), TaskStatus.NEW, 4)); //6
-        ((Epic) inMemoryTaskManager.getEpic(4)).addSubtask(subtask);
-        ((Epic) inMemoryTaskManager.getEpic(4)).checker();
+                "Взять губку", inMemoryTaskManager.getCurrent(), TaskStatus.NEW, 2)); // 6
+        ((Epic) inMemoryTaskManager.getEpic(2)).addSubtask(subtask);
+        ((Epic) inMemoryTaskManager.getEpic(2)).checker();
+
+        inMemoryTaskManager.createTask(new Epic("Приготовить бутерброд", "Взять губку",
+                inMemoryTaskManager.getCurrent())); // 7
+        ((Epic) inMemoryTaskManager.getEpic(6)).checker();
+
+/*        inMemoryTaskManager.createTask(subtask = new Subtask("Порезать колбасу",
+                "Взять губку", inMemoryTaskManager.getCurrent(), TaskStatus.NEW, 6)); //
+        ((Epic) inMemoryTaskManager.getEpic(6)).addSubtask(subtask);
+        ((Epic) inMemoryTaskManager.getEpic(6)).checker();
 
         inMemoryTaskManager.createTask(subtask = new Subtask("Положить колбасу на хлеб",
-                "Взять губку", inMemoryTaskManager.getCurrent(), TaskStatus.IN_PROGRESS, 4)); // 6
-        ((Epic) inMemoryTaskManager.getEpic(4)).addSubtask(subtask);
-        ((Epic) inMemoryTaskManager.getEpic(4)).checker();
+                "Взять губку", inMemoryTaskManager.getCurrent(), TaskStatus.IN_PROGRESS, 6)); // 6
+        ((Epic) inMemoryTaskManager.getEpic(6)).addSubtask(subtask);
+        ((Epic) inMemoryTaskManager.getEpic(6)).checker();
 
         inMemoryTaskManager.createTask(new Task("Постирать вещи", "Взять губку",
                 inMemoryTaskManager.getCurrent(), TaskStatus.IN_PROGRESS)); // 7
@@ -69,23 +79,30 @@ public class Main {
         inMemoryTaskManager.createTask(new Task("Заправить кровать", "Взять губку",
                 inMemoryTaskManager.getCurrent(), TaskStatus.NEW)); // 20
         inMemoryTaskManager.createTask(new Task("Сходить в парк", "Взять губку",
-                inMemoryTaskManager.getCurrent(), TaskStatus.NEW)); // 21
+                inMemoryTaskManager.getCurrent(), TaskStatus.NEW)); // 21*/
 
-        System.out.println(inMemoryTaskManager.getTask(20));
-        System.out.println(inMemoryTaskManager.getTask(19));
-        System.out.println(inMemoryTaskManager.getTask(18));
-        System.out.println(inMemoryTaskManager.getTask(17));
-        System.out.println(inMemoryTaskManager.getTask(16));
-        System.out.println(inMemoryTaskManager.getTask(15));
-        System.out.println(inMemoryTaskManager.getTask(14));
-        System.out.println(inMemoryTaskManager.getTask(13));
-        System.out.println(inMemoryTaskManager.getTask(12));
-        System.out.println(inMemoryTaskManager.getTask(11));
-        System.out.println(inMemoryTaskManager.getTask(10));
-        System.out.println(inMemoryTaskManager.getTask(9));
-        System.out.println(inMemoryTaskManager.getTask(8));
-        System.out.println(inMemoryTaskManager.getTask(7));
+        System.out.println(inMemoryTaskManager.getTask(0));
+        System.out.println(inMemoryTaskManager.getTask(1));
+        System.out.println(inMemoryTaskManager.getTask(2));
+        System.out.println(inMemoryTaskManager.getTask(3));
+        System.out.println(inMemoryTaskManager.getTask(4));
+        System.out.println(inMemoryTaskManager.getTask(5));
+        System.out.println(inMemoryTaskManager.getTask(6));
+        System.out.println(inMemoryTaskManager.getTask(6));
+        System.out.println(inMemoryTaskManager.getTask(5));
+        System.out.println(inMemoryTaskManager.getTask(4));
+        System.out.println(inMemoryTaskManager.getTask(3));
+        System.out.println(inMemoryTaskManager.getTask(2));
+        System.out.println(inMemoryTaskManager.getTask(1));
+        System.out.println(inMemoryTaskManager.getTask(0));
 
+        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+
+
+        System.out.println(inMemoryTaskManager.getHistory());
+        inMemoryTaskManager.deleteTaskById();
+        System.out.println(inMemoryTaskManager.getHistory());
+        inMemoryTaskManager.deleteAllTasks();
         System.out.println(inMemoryTaskManager.getHistory());
     }
 }
