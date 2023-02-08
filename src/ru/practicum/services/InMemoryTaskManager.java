@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class InMemoryTaskManager implements TaskManager {
     private int current = 1;
-    Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
     private final List<Task> tasks = new ArrayList<>();
     private final HistoryManager inMemoryHistoryManager = Manager.getDefaultHistory();
 
