@@ -7,6 +7,11 @@ import java.util.Objects;
 public class Epic extends Task {
     private final List<Subtask> subtasks;
 
+    public Epic(String taskName, String description, int taskId, TaskStatus taskStatus) {
+        super(taskName, description, taskId, taskStatus);
+        this.subtasks = new ArrayList<>();
+    }
+
     public Epic(String taskName, String description, int taskId) {
         super(taskName, description, taskId);
         this.subtasks = new ArrayList<>();

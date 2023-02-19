@@ -52,7 +52,6 @@ public class InMemoryHistoryManager implements HistoryManager {
                 list.add(newHead.data);
                 newHead = newHead.next;
             }
-            System.out.println(list.size());
             return list;
         }
 

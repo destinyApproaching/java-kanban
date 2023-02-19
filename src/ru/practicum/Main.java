@@ -1,5 +1,6 @@
 package ru.practicum;
 
+import ru.practicum.services.ManagerSaveException;
 import ru.practicum.services.TaskManager;
 import ru.practicum.models.*;
 import ru.practicum.models.TaskStatus;
@@ -7,7 +8,7 @@ import ru.practicum.utils.Manager;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ManagerSaveException {
         TaskManager inMemoryTaskManager = Manager.getDefaultTaskManager();
         Subtask subtask;
 
@@ -97,7 +98,6 @@ public class Main {
         System.out.println(inMemoryTaskManager.getTask(0));
 
         System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-
 
         System.out.println(inMemoryTaskManager.getHistory());
         inMemoryTaskManager.deleteTaskById();

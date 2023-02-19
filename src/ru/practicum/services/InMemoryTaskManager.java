@@ -37,7 +37,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Task getTask(int id) {
+    public Task getTask(int id) throws ManagerSaveException {
         inMemoryHistoryManager.add(tasks.get(id));
         return tasks.get(id);
     }
@@ -48,19 +48,12 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void getTasks() {
-        if (tasks.isEmpty()) {
-            System.out.println("Список задач пуст.");
-        } else {
-            System.out.println("Вывожу задачи:");
-            for (Task task : tasks) {
-                System.out.println(task.toString());
-            }
-        }
+    public List<Task> getTasks() {
+        return tasks;
     }
 
     @Override
-    public void deleteAllTasks() {
+    public void deleteAllTasks() throws ManagerSaveException {
         for (int i = 1; i <= getCurrent() ; i++) {
             inMemoryHistoryManager.remove(i);
         }
@@ -81,7 +74,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void createTask(Task task) {
+    public void createTask(Task task) throws ManagerSaveException {
         tasks.add(task);
         getNextCurrent();
     }
@@ -95,7 +88,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void deleteTaskById() {
+    public void deleteTaskById() throws ManagerSaveException {
         System.out.println("Введите id, которое хотите удалить");
         int id = scanner.nextInt();
         for (Task task : tasks) {
@@ -124,5 +117,9 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public List<Task> getHistory() {
         return inMemoryHistoryManager.getHistory();
+    }
+
+    public HistoryManager getHistoryManager() {
+        return inMemoryHistoryManager;
     }
 }

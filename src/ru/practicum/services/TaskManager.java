@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TaskManager {
 
-    Task getTask(int id);
+    Task getTask(int id) throws ManagerSaveException;
 
     Task getEpic(int id);
 
@@ -17,17 +17,17 @@ public interface TaskManager {
 
     int getCurrent();
 
-    void getTasks();
+    List<Task> getTasks();
 
-    void deleteAllTasks();
+    void deleteAllTasks() throws ManagerSaveException;
 
     void getTaskById(int id);
 
-    void createTask(Task task);
+    void createTask(Task task) throws ManagerSaveException;
 
     void updateTask(Task task);
 
-    void deleteTaskById();
+    void deleteTaskById() throws ManagerSaveException;
 
     void printSubtasksInEpic();
 
