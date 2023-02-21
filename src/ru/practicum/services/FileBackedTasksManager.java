@@ -15,8 +15,33 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         this.file = file;
     }
 
-    public static FileBackedTasksManager loadFromFile(File file) {
-        return new FileBackedTasksManager(file);
+    public static FileBackedTasksManager loadFromFile(File file) throws ManagerSaveException {
+        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
+            String line;
+            int isEmptyCounter = 0;
+            List<String> fileData = new ArrayList<>();
+            while (bufferedReader.ready()) {
+                line = bufferedReader.readLine();
+                if (line.isEmpty()) {
+                    isEmptyCounter++;
+                    continue;
+                }
+                fileData.add(line);
+            }
+            for (int i = 1; i < fileData.size(); i++) {
+                if (isEmptyCounter == 1 && i == fileData.size() - 1) {
+                    for (Integer id : historyFromString(fileData.get(i))) {
+                        fileBackedTasksManager.getTask(id - 1);
+                    }
+                } else {
+                    fileBackedTasksManager.updateTask(fileBackedTasksManager.fromString(fileData.get(i)));
+                }
+            }
+        } catch (IOException e) {
+            throw new ManagerSaveException("Ошибка вывода");
+        }
+        return fileBackedTasksManager;
     }
 
     @Override
@@ -117,7 +142,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 String[] strings = list.toArray(new String[0]);
                 for (int i = 1; i < strings.length; i++) {
                     if (strings[i].isEmpty()) {
-                        System.out.println(historyFromString(strings[i + 1]));
+                        if (strings.length > i + 1) {
+                            System.out.println(historyFromString(strings[i + 1]));
+                        }
                         break;
                     } else {
                         System.out.println(fromString(strings[i]).toString());
@@ -181,11 +208,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
         System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
 
-        FileBackedTasksManager.loadFromFile(new File("Task.csv")).printFile();
+        FileBackedTasksManager fileBackedTasksManager1 = FileBackedTasksManager.loadFromFile(new File("Task.csv"));
 
-//        fileBackedTasksManager.deleteAllTasks();
-//
-//        fileBackedTasksManager.printFile();
+        fileBackedTasksManager1.printFile();
     }
 }
 

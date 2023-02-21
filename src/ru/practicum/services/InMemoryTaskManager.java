@@ -81,10 +81,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateTask(Task task) {
-        System.out.println("Всего id: " + getCurrent());
-        System.out.println("Введите id, которое хотите обновить");
-        int id = scanner.nextInt();
-        tasks.add(id, task);
+        tasks.add(task);
     }
 
     @Override
