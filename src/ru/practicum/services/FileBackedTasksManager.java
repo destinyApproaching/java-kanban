@@ -11,11 +11,12 @@ import java.util.List;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
     private final File file;
+
     public FileBackedTasksManager(File file) {
         this.file = file;
     }
 
-    public static FileBackedTasksManager loadFromFile(File file) throws ManagerSaveException {
+    public static FileBackedTasksManager loadFromFile(File file) {
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
             String line;
@@ -39,37 +40,37 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 }
             }
         } catch (IOException e) {
-            throw new ManagerSaveException("Ошибка вывода");
+            throw new ManagerLoadException("Ошибка при загрузке файла");
         }
         return fileBackedTasksManager;
     }
 
     @Override
-    public void createTask(Task task) throws ManagerSaveException {
+    public void createTask(Task task) {
         super.createTask(task);
         save();
     }
 
     @Override
-    public Task getTask(int id) throws ManagerSaveException {
+    public Task getTask(int id) {
         Task task = super.getTask(id);
         save();
         return task;
     }
 
     @Override
-    public void deleteAllTasks() throws ManagerSaveException {
+    public void deleteAllTasks() {
         super.deleteAllTasks();
         save();
     }
 
     @Override
-    public void deleteTaskById() throws ManagerSaveException {
+    public void deleteTaskById() {
         super.deleteTaskById();
         save();
     }
 
-    private void save() throws ManagerSaveException {
+    private void save() {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
             bufferedWriter.write("id,type,name,status,description,epic");
             bufferedWriter.newLine();
@@ -82,7 +83,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 bufferedWriter.write(historyToString(getHistoryManager()));
             }
         } catch (IOException e) {
-            throw new ManagerSaveException("Ошибка ввода");
+            throw new ManagerSaveException("Ошибка при сохранении файла");
         }
     }
 
@@ -131,7 +132,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return stringToList;
     }
 
-    public void printFile() throws ManagerSaveException {
+    public void printFile() {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
             List<String> list = new ArrayList<>();
             String line;
@@ -153,11 +154,11 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             }
 
         } catch (IOException e) {
-            throw new ManagerSaveException("Ошибка вывода");
+            throw new ManagerLoadException("Ошибка вывода информации из файла");
         }
     }
 
-    public static void main(String[] args) throws ManagerSaveException {
+    public static void main(String[] args) {
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(new File("Task.csv"));
         Subtask subtask;
 

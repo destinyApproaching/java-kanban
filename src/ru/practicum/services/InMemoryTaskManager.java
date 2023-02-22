@@ -37,7 +37,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Task getTask(int id) throws ManagerSaveException {
+    public Task getTask(int id) {
         inMemoryHistoryManager.add(tasks.get(id));
         return tasks.get(id);
     }
@@ -53,7 +53,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void deleteAllTasks() throws ManagerSaveException {
+    public void deleteAllTasks() {
         for (int i = 1; i <= getCurrent() ; i++) {
             inMemoryHistoryManager.remove(i);
         }
@@ -74,7 +74,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void createTask(Task task) throws ManagerSaveException {
+    public void createTask(Task task) {
         tasks.add(task);
         getNextCurrent();
     }
@@ -85,7 +85,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void deleteTaskById() throws ManagerSaveException {
+    public void deleteTaskById() {
         System.out.println("Введите id, которое хотите удалить");
         int id = scanner.nextInt();
         for (Task task : tasks) {

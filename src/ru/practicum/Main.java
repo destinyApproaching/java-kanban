@@ -1,6 +1,5 @@
 package ru.practicum;
 
-import ru.practicum.services.ManagerSaveException;
 import ru.practicum.services.TaskManager;
 import ru.practicum.models.*;
 import ru.practicum.models.TaskStatus;
@@ -8,7 +7,7 @@ import ru.practicum.utils.Manager;
 
 public class Main {
 
-    public static void main(String[] args) throws ManagerSaveException {
+    public static void main(String[] args) {
         TaskManager inMemoryTaskManager = Manager.getDefaultTaskManager();
         Subtask subtask;
 
@@ -41,7 +40,7 @@ public class Main {
                 inMemoryTaskManager.getCurrent())); // 7
         ((Epic) inMemoryTaskManager.getEpic(6)).checker();
 
-/*        inMemoryTaskManager.createTask(subtask = new Subtask("Порезать колбасу",
+        inMemoryTaskManager.createTask(subtask = new Subtask("Порезать колбасу",
                 "Взять губку", inMemoryTaskManager.getCurrent(), TaskStatus.NEW, 6)); //
         ((Epic) inMemoryTaskManager.getEpic(6)).addSubtask(subtask);
         ((Epic) inMemoryTaskManager.getEpic(6)).checker();
@@ -80,7 +79,7 @@ public class Main {
         inMemoryTaskManager.createTask(new Task("Заправить кровать", "Взять губку",
                 inMemoryTaskManager.getCurrent(), TaskStatus.NEW)); // 20
         inMemoryTaskManager.createTask(new Task("Сходить в парк", "Взять губку",
-                inMemoryTaskManager.getCurrent(), TaskStatus.NEW)); // 21*/
+                inMemoryTaskManager.getCurrent(), TaskStatus.NEW)); // 21
 
         System.out.println(inMemoryTaskManager.getTask(0));
         System.out.println(inMemoryTaskManager.getTask(1));
