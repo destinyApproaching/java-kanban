@@ -24,7 +24,7 @@ class EpicTest {
         epic.checker();
         Assertions.assertEquals(
                 TaskStatus.NEW,
-                epic.taskStatus
+                epic.getTaskStatus()
         );
     }
 
