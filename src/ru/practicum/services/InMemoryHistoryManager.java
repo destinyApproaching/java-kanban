@@ -29,7 +29,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         return history.getTasks();
     }
 
-    private static class CustomLinkedList<T> {
+    protected static class CustomLinkedList<T> {
         Map<Integer, Node<T>> nodeMap = new HashMap<>();
         private Node<T> head;
         private Node<T> tail;

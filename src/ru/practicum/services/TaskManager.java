@@ -14,21 +14,21 @@ public interface TaskManager {
 
     int getEpicId(int id);
 
-    int getCurrent();
-
     List<Task> getTasks();
 
     void deleteAllTasks();
 
-    void getTaskById(int id);
+    Task getTaskById(int id);
 
     void createTask(Task task);
 
-    void updateTask(Task task);
+    void deleteTaskById(int id);
 
-    void deleteTaskById();
-
-    void printSubtasksInEpic();
+    List<Subtask> printSubtasksInEpic(int id);
 
     List<Task> getHistory();
+
+    int getCurrent();
+
+    HistoryManager getHistoryManager();
 }

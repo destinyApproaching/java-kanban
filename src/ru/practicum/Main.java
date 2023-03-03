@@ -99,7 +99,7 @@ public class Main {
         System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
 
         System.out.println(inMemoryTaskManager.getHistory());
-        inMemoryTaskManager.deleteTaskById();
+        inMemoryTaskManager.deleteTaskById(0);
         System.out.println(inMemoryTaskManager.getHistory());
         inMemoryTaskManager.deleteAllTasks();
         System.out.println(inMemoryTaskManager.getHistory());
