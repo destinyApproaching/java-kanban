@@ -117,44 +117,27 @@ public class InMemoryTaskManager implements TaskManager {
         return inMemoryHistoryManager;
     }
 
-    public List<Task> getPrioritizedTasks() {
-        TaskSortingComparator taskSortingComparator = new TaskSortingComparator();
-        List<Task> taskWithDateTime = new ArrayList<>();
-        List<Task> taskWithoutDateTime = new ArrayList<>();
-        for (Task task : tasks) {
-            if (task.getStartTime() != null) {
-                taskWithDateTime.add(task);
-            } else {
-                taskWithoutDateTime.add(task);
-            }
-        }
-        taskWithDateTime.sort(taskSortingComparator);
-        taskWithDateTime.addAll(taskWithoutDateTime);
-        return taskWithDateTime;
-    }
-
-    public Set<Task> getToSort() {
+    public Set<Task> getPrioritizedTasks() {
         return toSort;
     }
 
     public boolean isValid() {
-        List<Task> validationList = getPrioritizedTasks();
-        for (int i = 0; i < validationList.size() - 1; i++) {
-            if (validationList.get(i).getStartTime() == null || validationList.get(i + 1).getStartTime() == null) {
+        for (int i = 0; i < tasks.size() - 1; i++) {
+            if (tasks.get(i).getStartTime() == null || tasks.get(i + 1).getStartTime() == null) {
                 return true;
             }
-            if (validationList.get(i).getStartTime().equals(validationList.get(i + 1).getStartTime())) {
-                if (validationList.get(i).getClass().getSimpleName().equals("Subtask")
-                        && ((Subtask) validationList.get(i)).getEpicId() == validationList.get(i + 1).getTaskId() - 1) {
+            if (tasks.get(i).getStartTime().equals(tasks.get(i + 1).getStartTime())) {
+                if (tasks.get(i).getClass().getSimpleName().equals("Subtask")
+                        && ((Subtask) tasks.get(i)).getEpicId() == tasks.get(i + 1).getTaskId() - 1) {
                     continue;
                 }
-                if (validationList.get(i + 1).getClass().getSimpleName().equals("Subtask")
-                        && ((Subtask) validationList.get(i + 1)).getEpicId() == validationList.get(i).getTaskId() - 1) {
+                if (tasks.get(i + 1).getClass().getSimpleName().equals("Subtask")
+                        && ((Subtask) tasks.get(i + 1)).getEpicId() == tasks.get(i).getTaskId() - 1) {
                     continue;
                 }
                 return false;
             }
-            if (validationList.get(i).getEndTime().isAfter(validationList.get(i + 1).getStartTime())) {
+            if (tasks.get(i).getEndTime().isAfter(tasks.get(i + 1).getStartTime())) {
                 return false;
             }
         }
@@ -192,7 +175,7 @@ public class InMemoryTaskManager implements TaskManager {
         inMemoryTaskManager.createTask(new Task("9", "9", 9, TaskStatus.DONE, Duration.ofMinutes(30), LocalDateTime.of(2022, 10, 27, 4, 30)));
         inMemoryTaskManager.createTask(new Task("10", "10", 10, TaskStatus.DONE, Duration.ofMinutes(30), LocalDateTime.of(2022, 10, 27, 4, 30)));
 
-        System.out.println(inMemoryTaskManager.getToSort());
+        System.out.println(inMemoryTaskManager.getPrioritizedTasks());
         System.out.println("Список валидный: " + inMemoryTaskManager.isValid());
     }
 }
