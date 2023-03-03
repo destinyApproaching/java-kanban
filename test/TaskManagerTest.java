@@ -1,11 +1,10 @@
-package ru.practicum.services;
-
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import ru.practicum.models.Epic;
 import ru.practicum.models.Subtask;
 import ru.practicum.models.Task;
 import ru.practicum.models.TaskStatus;
+import ru.practicum.services.TaskManager;
 
 import java.util.List;
 

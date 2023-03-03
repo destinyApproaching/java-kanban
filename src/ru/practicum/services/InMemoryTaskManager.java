@@ -12,6 +12,7 @@ public class InMemoryTaskManager implements TaskManager {
     private final List<Task> tasks = new ArrayList<>();
     private final HistoryManager inMemoryHistoryManager =
             Manager.getDefaultHistory();
+    private final Set<Task> toSort = new TreeSet<>();
 
     @Override
     public int getCurrent() {
@@ -74,7 +75,9 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void createTask(Task task) {
-        tasks.add(task);
+        toSort.add(task);
+        tasks.clear();
+        tasks.addAll(toSort);
         getNextCurrent();
     }
 
@@ -128,6 +131,10 @@ public class InMemoryTaskManager implements TaskManager {
         taskWithDateTime.sort(taskSortingComparator);
         taskWithDateTime.addAll(taskWithoutDateTime);
         return taskWithDateTime;
+    }
+
+    public Set<Task> getToSort() {
+        return toSort;
     }
 
     public boolean isValid() {
@@ -185,7 +192,7 @@ public class InMemoryTaskManager implements TaskManager {
         inMemoryTaskManager.createTask(new Task("9", "9", 9, TaskStatus.DONE, Duration.ofMinutes(30), LocalDateTime.of(2022, 10, 27, 4, 30)));
         inMemoryTaskManager.createTask(new Task("10", "10", 10, TaskStatus.DONE, Duration.ofMinutes(30), LocalDateTime.of(2022, 10, 27, 4, 30)));
 
-        System.out.println(inMemoryTaskManager.getPrioritizedTasks());
+        System.out.println(inMemoryTaskManager.getToSort());
         System.out.println("Список валидный: " + inMemoryTaskManager.isValid());
     }
 }

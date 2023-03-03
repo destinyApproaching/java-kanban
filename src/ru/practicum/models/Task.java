@@ -95,10 +95,15 @@ public class Task implements Comparable<Task> {
 
     @Override
     public int compareTo(Task o) {
-        if (this.getStartTime().isAfter(o.getStartTime())) {
-            return -1;
-        } else if (this.getStartTime().equals(o.getStartTime())) {
+        if (this.getStartTime() == null) {
+            return 1;
+        }
+        if (o.getStartTime() == null) {
+            return 1;
+        }
+        if (this.getStartTime().equals(o.getStartTime())) {
             return 0;
-        } else return 1;
+        }
+        return this.getStartTime().compareTo(o.getStartTime());
     }
 }

@@ -1,6 +1,8 @@
-package ru.practicum.models;
-
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import ru.practicum.models.Epic;
+import ru.practicum.models.Subtask;
+import ru.practicum.models.TaskStatus;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -20,7 +22,7 @@ class EpicTest {
                 1
         );
         epic.checker();
-        assertEquals(
+        Assertions.assertEquals(
                 TaskStatus.NEW,
                 epic.taskStatus
         );

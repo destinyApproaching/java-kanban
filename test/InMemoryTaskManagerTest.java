@@ -1,10 +1,9 @@
-package ru.practicum.services;
-
 import org.junit.jupiter.api.BeforeEach;
 import ru.practicum.models.Epic;
 import ru.practicum.models.Subtask;
 import ru.practicum.models.Task;
 import ru.practicum.models.TaskStatus;
+import ru.practicum.services.InMemoryTaskManager;
 
 class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
     @BeforeEach
