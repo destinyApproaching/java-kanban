@@ -41,6 +41,8 @@ public class Epic extends Task {
         } else if (doneCount == subtasks.size()) {
             taskStatus = TaskStatus.DONE;
         } else taskStatus = TaskStatus.IN_PROGRESS;
+        taskDuration = null;
+        startTime = null;
     }
 
     public void checkerWithDurationAndDateTime() {

@@ -4,7 +4,7 @@ import ru.practicum.models.*;
 
 import java.util.List;
 
-public interface TaskManager {
+public interface  TaskManager {
 
     Task getTask(int id);
 
@@ -21,6 +21,8 @@ public interface TaskManager {
     Task getTaskById(int id);
 
     void createTask(Task task);
+
+    void updateTask(Task task, int id);
 
     void deleteTaskById(int id);
 
