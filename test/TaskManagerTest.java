@@ -17,16 +17,16 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void shouldGetTaskWhenListIsNotEmpty(){
         taskManager.createTask(task);
-        assertEquals(task, taskManager.getTask(0));
+        assertEquals(task, taskManager.getTask(1));
     }
 
     @Test
     public void shouldGetTaskWhenListIsEmpty() {
-        IndexOutOfBoundsException ex = assertThrows(
-                IndexOutOfBoundsException.class,
-                () -> taskManager.getTask(0));
+        NullPointerException ex = assertThrows(
+                NullPointerException.class,
+                () -> taskManager.getTask(1));
 
-        assertEquals("Index " + 0 + " out of bounds for length " + taskManager.getTasks().size(),
+        assertEquals("Cannot invoke \"ru.practicum.models.Task.getTaskId()\" because \"task\" is null",
                 ex.getMessage());
     }
 
@@ -35,11 +35,11 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         taskManager.createTask(task);
         taskManager.createTask(epic);
         taskManager.createTask(subtask);
-        IndexOutOfBoundsException ex = assertThrows(
-                IndexOutOfBoundsException.class,
-                () -> taskManager.getTask(3));
+        NullPointerException ex = assertThrows(
+                NullPointerException.class,
+                () -> taskManager.getTask(6));
 
-        assertEquals("Index " + 3 + " out of bounds for length " + taskManager.getTasks().size(),
+        assertEquals("Cannot invoke \"ru.practicum.models.Task.getTaskId()\" because \"task\" is null",
                 ex.getMessage());
     }
 
@@ -70,12 +70,6 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
         assertEquals("Index " + 3 + " out of bounds for length " + taskManager.getTasks().size(),
                 ex.getMessage());
-    }
-
-    @Test
-    void shouldGetSubtaskWhenListIsNotEmpty() {
-        taskManager.createTask(epic);
-        assertEquals(epic, taskManager.getSubtask(0));
     }
 
     @Test
@@ -285,9 +279,9 @@ public abstract class TaskManagerTest<T extends TaskManager> {
                 3,
                 TaskStatus.NEW
         ));
-        taskManager.getTask(0);
         taskManager.getTask(1);
         taskManager.getTask(2);
+        taskManager.getTask(3);
         taskManager.deleteTaskById(1);
         assertEquals(2, taskManager.getHistoryManager().getHistory().size());
     }
@@ -307,9 +301,9 @@ public abstract class TaskManagerTest<T extends TaskManager> {
                 3,
                 TaskStatus.NEW
         ));
-        taskManager.getTask(0);
         taskManager.getTask(1);
         taskManager.getTask(2);
+        taskManager.getTask(3);
         taskManager.deleteTaskById(2);
         assertEquals(2, taskManager.getHistoryManager().getHistory().size());
     }
@@ -317,8 +311,8 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void shouldAddWhenDuplication() {
         taskManager.createTask(task);
-        taskManager.getTask(0);
-        taskManager.getTask(0);
+        taskManager.getTask(1);
+        taskManager.getTask(1);
         assertEquals(1, taskManager.getHistoryManager().getHistory().size());
     }
 }

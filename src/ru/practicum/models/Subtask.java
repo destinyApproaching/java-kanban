@@ -1,13 +1,12 @@
 package ru.practicum.models;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Subtask extends Task {
     protected int epicId;
 
-    public Subtask(String taskName, String description, int taskId, TaskStatus taskStatus, Duration duration, LocalDateTime startTime, int epicId) {
+    public Subtask(String taskName, String description, int taskId, TaskStatus taskStatus, Long duration, LocalDateTime startTime, int epicId) {
         super(taskName, description, taskId, taskStatus, duration, startTime);
         this.epicId = epicId;
     }

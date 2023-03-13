@@ -3,14 +3,15 @@ package ru.practicum.services;
 import ru.practicum.models.*;
 
 import java.util.List;
+import java.util.Set;
 
 public interface  TaskManager {
 
     Task getTask(int id);
 
-    Task getEpic(int id);
+    Epic getEpic(int id);
 
-    Task getSubtask(int id);
+    Subtask getSubtask(int id);
 
     int getEpicId(int id);
 
@@ -31,6 +32,8 @@ public interface  TaskManager {
     List<Task> getHistory();
 
     int getCurrent();
+
+    Set<Task> getPrioritizedTasks();
 
     HistoryManager getHistoryManager();
 }

@@ -3,7 +3,6 @@ package ru.practicum.services;
 import ru.practicum.models.*;
 import ru.practicum.utils.Manager;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -52,19 +51,23 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Task getEpic(int id) {
-        return tasks.get(id);
+    public Epic getEpic(int id) {
+        if (tasks.get(id).getClass().getSimpleName().equals("Epic")) {
+            return ((Epic) tasks.get(id));
+        } else throw new RuntimeException("Под данным id не Epic.");
     }
 
     @Override
     public Task getTask(int id) {
-        inMemoryHistoryManager.add(tasks.get(id));
-        return tasks.get(id);
+        inMemoryHistoryManager.add(getTaskById(id));
+        return getTaskById(id);
     }
 
     @Override
-    public Task getSubtask(int id) {
-        return tasks.get(id);
+    public Subtask getSubtask(int id) {
+        if (tasks.get(id).getClass().getSimpleName().equals("Subtask")) {
+            return ((Subtask) tasks.get(id));
+        } else throw new RuntimeException("Под данным id не Subtask.");
     }
 
     @Override
@@ -117,6 +120,26 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
+    public void createTaskWhenReading(Task task) {
+        prioritizedTasks.add(task);
+        tasks.clear();
+        tasks.addAll(prioritizedTasks);
+        getNextCurrent();
+        if (task.getClass().getSimpleName().equals("Subtask")) {
+            int id = ((Subtask) task).getEpicId();
+            for (Task prioritizedTask : prioritizedTasks) {
+                if (prioritizedTask.getClass().getSimpleName().equals("Epic") && prioritizedTask.getTaskId() == id) {
+                    ((Epic) prioritizedTask).addSubtask(((Subtask) task));
+                    if (task.getStartTime() != null) {
+                        ((Epic) prioritizedTask).checkerWithDurationAndDateTime();
+                    } else {
+                        ((Epic) prioritizedTask).checker();
+                    }
+                }
+            }
+        }
+    }
+
     @Override
     public void deleteTaskById(int id) {
         List<Task> deleteTasks = new ArrayList<>();
@@ -154,6 +177,7 @@ public class InMemoryTaskManager implements TaskManager {
         return inMemoryHistoryManager;
     }
 
+    @Override
     public Set<Task> getPrioritizedTasks() {
         return prioritizedTasks;
     }
@@ -166,17 +190,15 @@ public class InMemoryTaskManager implements TaskManager {
             if (prioritizedTask.getStartTime() == null || task.getStartTime() == null) {
                 return true;
             }
-            if (prioritizedTask.getStartTime().equals(task.getStartTime())) {
-                if (prioritizedTask.getClass().getSimpleName().equals("Subtask")
-                        && ((Subtask) prioritizedTask).getEpicId() == task.getTaskId() - 1) {
-                    return true;
-                }
-                if (task.getClass().getSimpleName().equals("Subtask")
-                        && ((Subtask) task).getEpicId() == prioritizedTask.getTaskId() - 1) {
-                    return true;
-                }
-                return false;
+            if (prioritizedTask.getClass().getSimpleName().equals("Subtask")
+                    && ((Subtask) prioritizedTask).getEpicId() == task.getTaskId()) {
+                return true;
             }
+            if (task.getClass().getSimpleName().equals("Subtask")
+                    && ((Subtask) task).getEpicId() == prioritizedTask.getTaskId()) {
+                return true;
+            }
+            if (prioritizedTask.getStartTime().equals(task.getStartTime())) {return false;}
             if (task.getStartTime().isAfter(prioritizedTask.getStartTime())
                     && task.getStartTime().isBefore(prioritizedTask.getEndTime())
                     || task.getEndTime().isAfter(prioritizedTask.getStartTime())
@@ -187,6 +209,7 @@ public class InMemoryTaskManager implements TaskManager {
                     && prioritizedTask.getEndTime().isBefore(task.getEndTime())) {
                 return true;
             }
+
         }
         return true;
     }
@@ -206,7 +229,7 @@ public class InMemoryTaskManager implements TaskManager {
                 "2",
                 2,
                 TaskStatus.NEW,
-                Duration.ofMinutes(30),
+                30L,
                 LocalDateTime.of(2000, 11, 27, 4, 30), 0);
         ((Epic) inMemoryTaskManager.getEpic(0)).addSubtask(subtask);
         ((Epic) inMemoryTaskManager.getEpic(0)).checkerWithDurationAndDateTime();
@@ -216,7 +239,7 @@ public class InMemoryTaskManager implements TaskManager {
                 "3",
                 3,
                 TaskStatus.IN_PROGRESS,
-                Duration.ofMinutes(30),
+                30L,
                 LocalDateTime.of(2008, 12, 27, 4, 30), 0);
         ((Epic) inMemoryTaskManager.getEpic(0)).addSubtask(subtask);
         ((Epic) inMemoryTaskManager.getEpic(0)).checkerWithDurationAndDateTime();
@@ -226,7 +249,7 @@ public class InMemoryTaskManager implements TaskManager {
                 "4",
                 4,
                 TaskStatus.DONE,
-                Duration.ofMinutes(30),
+                30L,
                 LocalDateTime.of(2004, 10, 27, 4, 30), 0);
         ((Epic) inMemoryTaskManager.getEpic(0)).addSubtask(subtask);
         ((Epic) inMemoryTaskManager.getEpic(0)).checkerWithDurationAndDateTime();
@@ -235,7 +258,7 @@ public class InMemoryTaskManager implements TaskManager {
         inMemoryTaskManager.createTask(new Task("5",
                 "5",
                 5,
-                TaskStatus.DONE, Duration.ofMinutes(30),
+                TaskStatus.DONE, 30L,
                 LocalDateTime.of(2009, 10, 27, 4, 30)));
 
         inMemoryTaskManager.createTask(new Task("6",
@@ -247,7 +270,7 @@ public class InMemoryTaskManager implements TaskManager {
                 "7",
                 7,
                 TaskStatus.DONE,
-                Duration.ofMinutes(30),
+                30L,
                 LocalDateTime.of(1996, 10, 27, 4, 30)));
 
         inMemoryTaskManager.createTask(new Task("8",
@@ -259,14 +282,14 @@ public class InMemoryTaskManager implements TaskManager {
                 "9",
                 9,
                 TaskStatus.DONE,
-                Duration.ofMinutes(30),
+                30L,
                 LocalDateTime.of(2022, 10, 27, 4, 30)));
 
         inMemoryTaskManager.createTask(new Task("10",
                 "10",
                 10,
                 TaskStatus.DONE,
-                Duration.ofMinutes(30),
+                30L,
                 LocalDateTime.of(2022, 10, 27, 4, 30)));
 
         for (Task task : inMemoryTaskManager.getTasks()) {
@@ -277,7 +300,7 @@ public class InMemoryTaskManager implements TaskManager {
                 "11",
                 1,
                 TaskStatus.IN_PROGRESS,
-                Duration.ofMinutes(90),
+                90L,
                 LocalDateTime.of(2015, 10, 27, 4, 30)), 1);
 
         for (Task task : inMemoryTaskManager.getTasks()) {
@@ -288,7 +311,7 @@ public class InMemoryTaskManager implements TaskManager {
                 "12",
                 1,
                 TaskStatus.IN_PROGRESS,
-                Duration.ofMinutes(90),
+                90L,
                 LocalDateTime.of(1996, 10, 27, 4, 30)), 1);
     }
 }

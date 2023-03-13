@@ -1,6 +1,5 @@
 package ru.practicum.models;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -9,7 +8,7 @@ public class Task {
     protected String description;
     protected int taskId;
     protected TaskStatus taskStatus;
-    protected Duration taskDuration = null;
+    protected Long taskDuration = null;
     protected LocalDateTime startTime = null;
 
     public Task(String taskName, String description, int taskId) {
@@ -20,7 +19,7 @@ public class Task {
 
 
 
-    public Task(String taskName, String description, int taskId, TaskStatus taskStatus, Duration duration, LocalDateTime startTime) {
+    public Task(String taskName, String description, int taskId, TaskStatus taskStatus, Long duration, LocalDateTime startTime) {
         this.taskName = taskName;
         this.description = description;
         this.taskId = taskId;
@@ -36,7 +35,7 @@ public class Task {
         this.taskStatus = taskStatus;
     }
 
-    public Duration getTaskDuration() {
+    public Long getTaskDuration() {
         return taskDuration;
     }
 
@@ -48,7 +47,7 @@ public class Task {
         if (taskDuration == null || startTime == null) {
             return null;
         } else {
-            return startTime.plus(taskDuration);
+            return startTime.plusMinutes(taskDuration);
         }
     }
 

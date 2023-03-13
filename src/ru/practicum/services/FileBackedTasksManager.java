@@ -6,20 +6,22 @@ import ru.practicum.models.Task;
 import ru.practicum.models.TaskStatus;
 
 import java.io.*;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
-    private final File file;
+    private static String path;
 
-    public FileBackedTasksManager(File file) {
-        this.file = file;
+    public FileBackedTasksManager(String path) {
+        super();
+        FileBackedTasksManager.path = path;
     }
 
+
     public static FileBackedTasksManager loadFromFile(File file) {
-        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);
+        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(path);
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
             String line;
             int isEmptyCounter = 0;
@@ -41,10 +43,25 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     fileBackedTasksManager.createTaskWhenReading(fileBackedTasksManager.fromString(fileData.get(i)));
                 }
             }
+            for (Task task : fileBackedTasksManager.getTasks()) {
+                if (task.getClass().getSimpleName().equals("Subtask")) {
+                    for (Task epic : fileBackedTasksManager.getTasks()) {
+                        if (epic.getClass().getSimpleName().equals("Epic") && epic.getTaskId() == ((Subtask) task).getEpicId()) {
+                            ((Epic) epic).addSubtask(((Subtask) task));
+                            fileBackedTasksManager.updateTask(epic, epic.getTaskId());
+                        }
+                    }
+                }
+            }
         } catch (IOException e) {
             throw new ManagerLoadException("Ошибка при загрузке файла");
         }
         return fileBackedTasksManager;
+    }
+
+    @Override
+    public Set<Task> getPrioritizedTasks() {
+        return super.getPrioritizedTasks();
     }
 
     @Override
@@ -53,8 +70,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         save();
     }
 
+    @Override
     public void createTaskWhenReading(Task task) {
-        super.createTask(task);
+        super.createTaskWhenReading(task);
     }
 
 
@@ -78,7 +96,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     public void save() {
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path))) {
             bufferedWriter.write("id,type,name,status,description,epic,start,duration");
             bufferedWriter.newLine();
             if (!getTasks().isEmpty()) {
@@ -131,7 +149,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     return new Task(stringToTask[2], stringToTask[4],
                             Integer.parseInt(stringToTask[0]),
                             TaskStatus.valueOf(stringToTask[3]),
-                            Duration.parse(stringToTask[7]),
+                            Long.parseLong(stringToTask[7]),
                             LocalDateTime.parse(stringToTask[6]));
                 }
             }
@@ -145,7 +163,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     return new Epic(stringToTask[2], stringToTask[4],
                             Integer.parseInt(stringToTask[0]),
                             TaskStatus.valueOf(stringToTask[3]),
-                            Duration.parse(stringToTask[7]),
+                            Long.parseLong(stringToTask[7]),
                             LocalDateTime.parse(stringToTask[6]));
                 }
             }
@@ -161,7 +179,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                             stringToTask[4],
                             Integer.parseInt(stringToTask[0]),
                             TaskStatus.valueOf(stringToTask[3]),
-                            Duration.parse(stringToTask[7]),
+                            Long.parseLong(stringToTask[7]),
                             LocalDateTime.parse(stringToTask[6]),
                             Integer.parseInt(stringToTask[5]));
                 }
@@ -187,7 +205,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     public void printFile() {
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path))) {
             List<String> list = new ArrayList<>();
             String line;
             while ((line = bufferedReader.readLine()) != null) {
@@ -214,7 +232,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     public static void main(String[] args) {
         System.out.println("CREATING NEW FILE...\n");
-        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(new File("Task.csv"));
+        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("task.csv");
         Epic epic;
         Subtask subtask;
 
@@ -222,17 +240,17 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         epic.checker();
         fileBackedTasksManager.createTask(epic);
 
-        subtask = new Subtask("2", "2", 2, TaskStatus.NEW, Duration.ofMinutes(30), LocalDateTime.of(2001, 11, 27, 4, 30), 0);
+        subtask = new Subtask("2", "2", 2, TaskStatus.NEW, 30L, LocalDateTime.of(2006, 11, 27, 4, 30), 0);
         ((Epic) fileBackedTasksManager.getEpic(0)).addSubtask(subtask);
         ((Epic) fileBackedTasksManager.getEpic(0)).checkerWithDurationAndDateTime();
         fileBackedTasksManager.createTask(subtask);
 
-        subtask = new Subtask("3", "3", 3, TaskStatus.IN_PROGRESS, Duration.ofMinutes(30), LocalDateTime.of(2001, 12, 27, 4, 30), 0);
+        subtask = new Subtask("3", "3", 3, TaskStatus.IN_PROGRESS, 30L, LocalDateTime.of(2001, 12, 27, 4, 30), 0);
         ((Epic) fileBackedTasksManager.getEpic(0)).addSubtask(subtask);
         ((Epic) fileBackedTasksManager.getEpic(0)).checkerWithDurationAndDateTime();
         fileBackedTasksManager.createTask(subtask);
 
-        subtask = new Subtask("4", "4", 4, TaskStatus.DONE, Duration.ofMinutes(30), LocalDateTime.of(2001, 10, 27, 4, 30), 0);
+        subtask = new Subtask("4", "4", 4, TaskStatus.DONE, 30L, LocalDateTime.of(2004, 10, 27, 4, 30), 0);
         ((Epic) fileBackedTasksManager.getEpic(0)).addSubtask(subtask);
         ((Epic) fileBackedTasksManager.getEpic(0)).checkerWithDurationAndDateTime();
         fileBackedTasksManager.createTask(subtask);
@@ -246,7 +264,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
         fileBackedTasksManager.printFile();
 
-        System.out.println("\nREADING THE CREATED FILE AND WRITING NEW FILE...\n");
+        System.out.println("\nLOAD AND READING THE CREATED FILE...\n");
 
         FileBackedTasksManager fileBackedTasksManager1 = FileBackedTasksManager.loadFromFile(new File("Task.csv"));
 

@@ -1,6 +1,5 @@
 package ru.practicum.models;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,7 @@ public class Epic extends Task {
         this.subtasks = new ArrayList<>();
     }
 
-    public Epic(String taskName, String description, int taskId, TaskStatus taskStatus, Duration duration, LocalDateTime startTime) {
+    public Epic(String taskName, String description, int taskId, TaskStatus taskStatus, Long duration, LocalDateTime startTime) {
         super(taskName, description, taskId, taskStatus, duration, startTime);
         this.subtasks = new ArrayList<>();
     }
@@ -69,7 +68,7 @@ public class Epic extends Task {
     @Override
     public LocalDateTime getEndTime() {
         subtasks.sort(epicSortingComparator);
-        return subtasks.get(subtasks.size() - 1).startTime.plus(subtasks.get(subtasks.size() - 1).getTaskDuration());
+        return subtasks.get(subtasks.size() - 1).startTime.plusMinutes(subtasks.get(subtasks.size() - 1).getTaskDuration());
     }
 
     @Override
@@ -107,10 +106,10 @@ public class Epic extends Task {
         subtasks.add(subtask);
     }
 
-    public Duration getSumOfDuration() {
-        Duration sumOfDuration = Duration.ofMinutes(0);
+    public Long getSumOfDuration() {
+        Long sumOfDuration = 0L;
         for (Subtask subtask : subtasks) {
-            sumOfDuration = sumOfDuration.plus(subtask.getTaskDuration());
+            sumOfDuration += subtask.getTaskDuration();
         }
         return sumOfDuration;
     }
